@@ -1,0 +1,7 @@
+<?php $this->startBlock('content') ?>
+<h1>Add user</h1>
+<a href="<?= $this->routeUrl('/users') ?>">Back</a>
+<form action="<?= $this->routeUrl('/user-add') ?>" method="post">
+    <?= $this->fetch('form', ['form' => $form]) ?>
+</form>
+<?php $this->endBlock() ?>

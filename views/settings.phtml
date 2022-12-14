@@ -1,0 +1,9 @@
+<?php $this->startBlock('content') ?>
+<h1>Settings</h1>
+<?php if ($success): ?>
+    <div>Password changed.</div>
+<?php endif ?>
+<form action="<?= $this->routeUrl('/settings') ?>" method="post">
+    <?= $this->fetch('form', ['form' => $form]) ?>
+</form>
+<?php $this->endBlock() ?>

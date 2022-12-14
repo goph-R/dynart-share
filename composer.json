@@ -1,0 +1,31 @@
+{
+    "name": "share/app",
+    "description": "A share application project.",
+    "type": "project",
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "Share\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "gopher",
+            "email": "gopher.hu@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1.0",
+        "dynart/micro": "@stable"
+    },
+    "repositories": {
+        "dynart-micro": {
+            "type": "path",
+            "url": "../dynart-micro",
+            "options": {
+                "symlink": true
+            }
+        }
+    }
+}
