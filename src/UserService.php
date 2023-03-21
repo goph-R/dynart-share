@@ -24,6 +24,8 @@ class UserService {
     private $repository;
     
     public function __construct(Config $config, Request $request, Session $session, UserRepository $repository) {
+        $this->config = $config;
+        $this->request = $request;
         $this->session = $session;
         $this->repository = $repository;
         $this->initCurrent();
@@ -90,19 +92,19 @@ class UserService {
         $this->repository->add($form);
     }
 
-    public function findById(\int $id) {
+    public function findById(int $id) {
         return $this->repository->findById($id);
     }
 
-    public function findAll(array $params) {
-        return $this->repository->findAll(null, $params);
+    public function findAll($fields, array $params) {
+        return $this->repository->findAll($fields, $params);
     }
 
     public function findAllCount(array $params) {
         return $this->repository->findAllCount($params);
     }
 
-    public function edit(\int $id, Form $form) {
+    public function edit(int $id, Form $form) {
         $this->repository->edit($id, $form);
     }
 

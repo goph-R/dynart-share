@@ -10,7 +10,7 @@ class MatchValidator extends Validator {
 
     private $otherName;
 
-    public function __construct(\string $otherName) {
+    public function __construct(string $otherName) {
         $this->otherName = $otherName;
     }
 

@@ -4,7 +4,8 @@ namespace Share;
 
 use Dynart\Micro\View;
 
-require_once '../views/functions.php';
+require_once 'vendor/dynart/micro/views/functions.php';
+require_once 'views/functions.php';
 
 class App extends \Dynart\Micro\WebApp {
 
@@ -13,11 +14,12 @@ class App extends \Dynart\Micro\WebApp {
 
     public function __construct($configPaths = []) {
         parent::__construct($configPaths);
-        $this->add(UserService::class);
+        $this->add(TableView::class);
+        $this->add(UserRepository::class);
         $this->add(UserForms::class);
+        $this->add(UserService::class);
         $this->add(UserController::class);
         $this->add(CaptchaService::class);
-        $this->add(TableView::class);
     }
 
     public function init() {
@@ -50,7 +52,7 @@ class App extends \Dynart\Micro\WebApp {
     }
 
     public function requireLogin() {
-        if ($this->userService->loggedIn()) {
+        if (!$this->userService->loggedIn()) {
             $this->redirect('/login');
         }
     }

@@ -43,6 +43,8 @@ class UserController {
 
     public function __construct(Request $request, Response $response, View $view, UserService $userService, UserForms $userForms, CaptchaService $captchaService) {
         $this->app = App::instance();
+        $this->request = $request;
+        $this->response = $response;
         $this->view = $view;
         $this->userService = $userService;
         $this->userForms = $userForms;
@@ -115,7 +117,7 @@ class UserController {
 
         $message = $this->processGroupAction();
         if (!$message) {
-            $this->createMessageFromId($this->app->request('message_id'));
+            $this->createMessageFromId($this->request->get('message_id'));
         }
 
         $form = $this->userForms->filter();
@@ -149,8 +151,8 @@ class UserController {
         $tableView->addAction('/user-edit', 'Edit');
 
         $fields = array_keys($columns);
-        $users = $this->app->user()->repository()->findAll($fields, $params);
-        $count = $this->app->user()->repository()->findAllCount($params);
+        $users = $this->userService->findAll($fields, $params);
+        $count = $this->userService->findAllCount($params);
 
         $pager = new Pager('/users', $params, $count);
         $tableView->setItems($users);

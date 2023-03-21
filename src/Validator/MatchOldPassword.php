@@ -3,6 +3,7 @@
 namespace Share\Validator;
 
 use Dynart\Micro\Validator;
+use Share\UserRepository;
 use Share\UserService;
 
 class MatchOldPassword extends Validator {
@@ -12,12 +13,16 @@ class MatchOldPassword extends Validator {
     /** @var UserService */
     private $user;
 
-    public function __construct(UserService $user) {
+    /** @var UserRepository */
+    private $repository;
+
+    public function __construct(UserService $user, UserRepository $repository) {
         $this->user = $user;
+        $this->repository = $repository;
     }
 
     public function validate($value) {
-        return $this->user->repository()->hashPassword($value) == $this->user->current('password');
+        return $this->repository->hashPassword($value) == $this->user->current('password');
     }
 
 }

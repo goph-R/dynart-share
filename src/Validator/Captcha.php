@@ -11,7 +11,7 @@ class Captcha extends Validator {
     private $session;
     private $name;
 
-    public function __construct(Session $session, \string $name) {
+    public function __construct(Session $session, string $name) {
         $this->session = $session;
         $this->name = $name;
         $this->message = 'Mismatch.';

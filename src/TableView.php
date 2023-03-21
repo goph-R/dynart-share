@@ -18,13 +18,13 @@ class TableView {
     private $groupActions = [];
     private $selectable = 'selected';
 
-    public function __construct(Router $router, \string $route, array $params) {
+    public function __construct(Router $router, string $route, array $params) {
         $this->router = $router;
         $this->route = $route;
         $this->params = $params;
     }
 
-    public function addGroupAction(\string $name, \string $label) {
+    public function addGroupAction(string $name, string $label) {
         $this->groupActions[$name] = $label;
     }
 
@@ -36,15 +36,15 @@ class TableView {
         $this->items = $items;
     }
 
-    public function addAction(\string $route, \string $label) {
+    public function addAction(string $route, string $label) {
         $this->actions[$route] = $label;
     }
 
-    public function setSelectable(\bool $value) {
+    public function setSelectable(bool $value) {
         $this->selectable = $value;
     }
 
-    public function checkView(\string $field, array $item) {
+    public function checkView(string $field, array $item) {
         return $item[$field] ? '&#10004;' : '';
     }
 

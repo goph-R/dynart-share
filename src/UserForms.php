@@ -113,7 +113,7 @@ class UserForms {
         ]);
         $form->setRequired('password', false);
         $form->setRequired('password_again', false);
-        $form->addValidator('old_password', new MatchOldPassword($this->app->user()));
+        $form->addValidator('old_password', $this->app->create(MatchOldPassword::class));
         $form->addValidator('password', new Password());
         $form->addValidator('password_again', new MatchValidator('password'));
         return $form;
