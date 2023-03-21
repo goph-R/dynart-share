@@ -2,12 +2,27 @@
 
 namespace Share;
 
+use Dynart\Micro\Config;
+use Dynart\Micro\Database;
 use Dynart\Micro\Form;
 use Dynart\Micro\Repository;
+use Dynart\Micro\Session;
 
 class UserRepository extends Repository {
-    
+
+    /** @var Config */
+    private $config;
+
+    /** @var Session */
+    private $session;
+
     protected $table = 'user';
+
+    public function __construct(Database $db, Config $config, Session $session) {
+        parent::__construct($db);
+        $this->session = $session;
+        $this->config = $config;
+    }
 
     public function findIdByLoginForm(Form $form) {
         $sql = "select `id` from `user`";
@@ -40,7 +55,7 @@ class UserRepository extends Repository {
             'password' => $this->hashPassword($form->value('password'))
         ];
         $this->db->update('user', $values,'id = :id', [
-            ':id' => $this->app->session('user.id')
+            ':id' => $this->session->get('user.id')
         ]);
     }
 
@@ -67,7 +82,7 @@ class UserRepository extends Repository {
     }
 
     public function hashPassword(string $password) {
-        return md5($this->app->config(App::CONFIG_SALT).$password);
+        return md5($this->config->get('app.salt').$password);
     }
 
     protected function getWhere(array $params) {

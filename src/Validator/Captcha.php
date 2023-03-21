@@ -2,22 +2,23 @@
 
 namespace Share\Validator;
 
+use Dynart\Micro\Session;
 use Dynart\Micro\Validator;
-use Dynart\Micro\App;
 
 class Captcha extends Validator {
 
-    private $app;
+    /** @var Session */
+    private $session;
     private $name;
 
-    public function __construct(App $app, string $name) {
-        $this->app = $app;
+    public function __construct(Session $session, \string $name) {
+        $this->session = $session;
         $this->name = $name;
         $this->message = 'Mismatch.';
     }
 
     public function validate($value) {
-        $storedValue = $this->app->session($this->name);    
+        $storedValue = $this->session->get($this->name);
         return $storedValue && $storedValue == $value;
     }
 

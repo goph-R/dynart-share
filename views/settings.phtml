@@ -3,7 +3,7 @@
 <?php if ($success): ?>
     <div>Password changed.</div>
 <?php endif ?>
-<form action="<?= $this->routeUrl('/settings') ?>" method="post">
+<form action="<?= route_url('/settings') ?>" method="post">
     <?= $this->fetch('form', ['form' => $form]) ?>
 </form>
 <?php $this->endBlock() ?>

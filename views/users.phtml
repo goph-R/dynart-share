@@ -3,9 +3,9 @@
 <?php if ($message): ?>
     <div><?= $message['text'] ?></div>
 <?php endif ?>
-<a href="<?= $this->routeUrl('/user-add') ?>">Add</a>
-<form action="<?= $this->routeUrl('/users') ?>" method="get">
-    <?php if (!$this->app->config(\Dynart\Micro\App::CONFIG_USE_REWRITE)): ?>
+<a href="<?= route_url('/user-add') ?>">Add</a>
+<form action="<?= route_url('/users') ?>" method="get">
+    <?php if (!use_rewrite()): ?>
         <input type="hidden" name="route" value="/users">
     <?php endif ?>
     <?= $this->fetch('form', ['form' => $form]) ?>

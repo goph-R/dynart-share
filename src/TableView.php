@@ -2,11 +2,14 @@
 
 namespace Share;
 
-use Dynart\Micro\View;
+use Dynart\Micro\Router;
 
 class TableView {
-    
-    private $view;
+
+    /** @var Router */
+    private $router;
+
+
     private $route;
     private $params;
     private $columns;
@@ -15,13 +18,13 @@ class TableView {
     private $groupActions = [];
     private $selectable = 'selected';
 
-    public function __construct(View $view, string $route, array $params) {
-        $this->view = $view;
+    public function __construct(Router $router, \string $route, array $params) {
+        $this->router = $router;
         $this->route = $route;
         $this->params = $params;
     }
 
-    public function addGroupAction(string $name, string $label) {
+    public function addGroupAction(\string $name, \string $label) {
         $this->groupActions[$name] = $label;
     }
 
@@ -33,15 +36,15 @@ class TableView {
         $this->items = $items;
     }
 
-    public function addAction(string $route, string $label) {
+    public function addAction(\string $route, \string $label) {
         $this->actions[$route] = $label;
     }
 
-    public function setSelectable(bool $value) {
+    public function setSelectable(\bool $value) {
         $this->selectable = $value;
     }
 
-    public function checkView(string $field, array $item) {
+    public function checkView(\string $field, array $item) {
         return $item[$field] ? '&#10004;' : '';
     }
 
@@ -61,18 +64,18 @@ class TableView {
         if (!$this->groupActions) {
             return '';
         }
-        $html = '<form action="'.$this->view->routeUrl($this->route).'" method="POST">';
+        $html = '<form action="'.$this->router->url($this->route).'" method="POST">';
         $html .= '<div class="table-view-group-action-form">';
         $html .= '<select id="group_action_select" name="group_action">';
         $html .= '<option>-- Do nothing --</option>';
         foreach ($this->groupActions as $name => $label) {
-            $html .= '<option value="'.$name.'">'.$this->view->escape($label).'</option>';
+            $html .= '<option value="'.$name.'">'.htmlspecialchars($label).'</option>';
         }
         $html .= '</select>';
         $html .= '<input type="submit" value="Submit">';
         foreach ($this->params as $name => $value) {
             if ($value === null) continue;
-            $html .= '<input type="hidden" name="'.$name.'" value="'.$this->view->escapeAttribute($value).'">';
+            $html .= '<input type="hidden" name="'.$name.'" value="'.htmlspecialchars($value, ENT_QUOTES).'">';
         }
         $html .= '</div>';
         return $html;
@@ -101,7 +104,7 @@ class TableView {
             $params['order_by'] = $field;
 
             // create the link (put in a table because the order icon breaks on small screens)
-            $html .= '<a href="'.$this->view->routeUrl($this->route, $params).'">';
+            $html .= '<a href="'.$this->router->url($this->route, $params).'">';
             $html .= '<table><tr>';
             $html .= '<td>'.$this->nbspView($column['label']).'</td>';
             if ($isCurrent) {
@@ -142,7 +145,7 @@ class TableView {
         }
         $actions = [];
         foreach ($this->actions as $route => $label) {
-            $url = $this->view->routeUrl($route.'/'.$item['id']);
+            $url = $this->router->url($route.'/'.$item['id']);
             $actions[] = '<a href="'.$url.'">'.$this->nbspView($label).'</a>';
         }
         // must be in a table because of the line breaks on small screen
@@ -164,7 +167,7 @@ class TableView {
     }
 
     private function nbspView($value) {
-        return str_replace(' ', '&nbsp;', $this->view->escape($value));
+        return str_replace(' ', '&nbsp;', htmlspecialchars($value));
     }
 
 }

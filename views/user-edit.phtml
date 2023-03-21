@@ -1,7 +1,7 @@
 <?php $this->startBlock('content') ?>
-<h1>Edit user: <?= $this->escape($username) ?></h1>
-<a href="<?= $this->routeUrl('/users') ?>">Back</a>
-<form action="<?= $this->routeUrl('/user-edit/'.$id) ?>" method="post">
+<h1>Edit user: <?= esc_html($username) ?></h1>
+<a href="<?= route_url('/users') ?>">Back</a>
+<form action="<?= route_url('/user-edit/'.$id) ?>" method="post">
     <?= $this->fetch('form', ['form' => $form]) ?>
 </form>
 <?php $this->endBlock() ?>

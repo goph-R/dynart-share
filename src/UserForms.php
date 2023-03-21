@@ -3,6 +3,7 @@
 namespace Share;
 
 use Dynart\Micro\Form;
+use Dynart\Micro\Router;
 
 use Share\Validator\Password;
 use Share\Validator\MatchOldPassword;
@@ -12,14 +13,24 @@ use Share\Validator\Captcha;
 
 class UserForms {
 
+    /** @var UserService */
+    private $userService;
+
+    /** @var Router */
+    private $router;
+
+    /** @var App */
     private $app;
 
-    public function __construct(App $app) {
-        $this->app = $app;
+    public function __construct(Router $router, UserService $userService) {
+        $this->app = App::instance();
+        $this->router = $router;
+        $this->userService = $userService;
     }
 
     public function login() {
-        $form = new Form($this->app);
+        /** @var Form $form */
+        $form = $this->app->create(Form::class);
         $form->addFields([
             'username' => [
                 'type' => 'text',
@@ -32,7 +43,7 @@ class UserForms {
             'captcha' => [
                 'type' => 'captcha',
                 'label' => 'Captcha',
-                'url' => $this->app->view()->routeUrl('/captcha')
+                'url' => $this->router->url('/captcha')
             ],
             'submit' => [
                 'label' => '',
@@ -40,12 +51,13 @@ class UserForms {
                 'text' => 'Login'
             ]
         ]);
-        $form->addValidator('captcha', new Captcha($this->app, 'user.captcha'));        
+        $form->addValidator('captcha', $this->app->create(Captcha::class, ['user.captcha']));
         return $form;
     }
 
     public function signUp() {
-        $form = new Form($this->app);
+        /** @var Form $form */
+        $form = $this->app->create(Form::class);
         $form->addFields([
             'username' => [
                 'type' => 'text',
@@ -62,7 +74,7 @@ class UserForms {
             'captcha' => [
                 'type' => 'captcha',
                 'label' => 'Captcha',
-                'url' => $this->app->view()->routeUrl('/captcha')
+                'url' => $this->router->url('/captcha')
             ],
             'submit' => [
                 'label' => '',
@@ -72,13 +84,14 @@ class UserForms {
         ]);
         $form->addValidator('password', new Password());
         $form->addValidator('password_again', new MatchValidator('password'));
-        $form->addValidator('username', new UsernameNotInUse($this->app->user()->repository()));
-        $form->addValidator('captcha', new Captcha($this->app, 'user.captcha'));
+        $form->addValidator('username', $this->app->create(UsernameNotInUse::class));
+        $form->addValidator('captcha', $this->app->create(Captcha::class, ['user.captcha']));
         return $form;
     }
 
     public function settings() {
-        $form = new Form($this->app);
+        /** @var Form $form */
+        $form = $this->app->create(Form::class);
         $form->addFields([
             'old_password' => [
                 'type' => 'password',
@@ -107,7 +120,8 @@ class UserForms {
     }
 
     public function filter() {
-        $form = new Form($this->app, '', false);
+        /** @var Form $form */
+        $form = $this->app->create(Form::class, ['', false]);
         $form->addFields([
             'text' => [
                 'label' => 'Search for',
@@ -148,7 +162,8 @@ class UserForms {
     }
 
     public function edit(int $id, array $data) {
-        $form = new Form($this->app);
+        /** @var Form $form */
+        $form = $this->app->create(Form::class);
         $form->addFields([
             'password' => [
                 'type' => 'text',
@@ -171,7 +186,7 @@ class UserForms {
             ]
         ], false);
         $form->addValidator('password', new Password());
-        if ($id == $this->app->user()->current('id')) {
+        if ($id == $this->userService->current('id')) {
             $form->setRequired('active', true);
             $form->setRequired('admin', true);
         }
@@ -183,7 +198,8 @@ class UserForms {
     }
 
     public function add() {
-        $form = new Form($this->app);
+        /** @var Form $form */
+        $form = $this->app->create(Form::class);
         $form->addFields([
             'username' => [
                 'type' => 'text',

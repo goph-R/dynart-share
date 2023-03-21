@@ -46,20 +46,19 @@ main {
 <body>
 <div class="app-container">
     <header>
-        asdf
     </header>
     <nav class="primary-navigation">
         <ul>
-            <li><a href="<?= $this->routeUrl('/') ?>">Home</a></li>
-            <?php if ($this->app->user()->loggedIn()): ?>
-                <?php if ($this->app->user()->current('admin')): ?>
-                    <li><a href="<?= $this->routeUrl('/users') ?>">Users</a></li>
+            <li><a href="<?= route_url('/') ?>">Home</a></li>
+            <?php if (logged_in()): ?>
+                <?php if (is_admin()): ?>
+                    <li><a href="<?= route_url('/users') ?>">Users</a></li>
                 <?php endif ?>
-                <li><a href="<?= $this->routeUrl('/settings') ?>">Settings</a></li>
-                <li><a href="<?= $this->routeUrl('/logout') ?>">Logout</a></li>
+                <li><a href="<?= route_url('/settings') ?>">Settings</a></li>
+                <li><a href="<?= route_url('/logout') ?>">Logout</a></li>
             <?php else: ?>
-                <li><a href="<?= $this->routeUrl('/sign-up') ?>">Sign up</a></li>
-                <li><a href="<?= $this->routeUrl('/login') ?>">Login</a></li>
+                <li><a href="<?= route_url('/sign-up') ?>">Sign up</a></li>
+                <li><a href="<?= route_url('/login') ?>">Login</a></li>
             <?php endif ?>
         </ul>
     </nav>
